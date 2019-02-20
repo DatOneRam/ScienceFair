@@ -2,7 +2,7 @@ import sun.font.TrueTypeGlyphMapper;
 
 public class Board
 {
-    private int line[];
+    private int line[] = new int[5];
 
     public Board()
     {
