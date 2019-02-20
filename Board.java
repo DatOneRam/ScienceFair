@@ -1,5 +1,3 @@
-import sun.font.TrueTypeGlyphMapper;
-
 public class Board
 {
     private int line[] = new int[5];
