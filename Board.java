@@ -6,6 +6,7 @@ public class Board
 
     public Board()
     {
+        line[0] = 0;
         line[1] = 1;
         line[2] = 3;
         line[3] = 5;
