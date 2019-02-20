@@ -2,7 +2,7 @@ import javax.lang.model.util.ElementScanner6;
 
 public class StrategyBot
 {
-    private int[] line;
+    private int[] line =- new int[5];
     private Board field;
 
     public StrategyBot(Board f)
