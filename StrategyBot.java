@@ -2,12 +2,12 @@ import javax.lang.model.util.ElementScanner6;
 
 public class StrategyBot
 {
-    private int[] line =- new int[5];
+    private int[] line = new int[5];
     private Board field;
 
     public StrategyBot(Board f)
     {
-
+        line[0] = 0;
         line[1] = field.getLineOne();
         line[2] = field.getLineTwo();
         line[3] = field.getLineThree();
