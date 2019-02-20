@@ -36,15 +36,15 @@ public class StrategyBot
 
     public int getGroupToRemove(String b)
     {
-        if (b.substring[7] == '1')
+        if (b.charAt(7) == '1')
         {
             return 1;
         }
-        else if (b.substring[6] == '1')
+        else if (b.charAt(6) == '1')
         {
             return 2;
         }
-        else if (b.substring[5] == '1')
+        else if (b.charAt(5) == '1')
         {
             return 3;
         }
