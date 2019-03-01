@@ -11,10 +11,8 @@ public class Board
         line[4] = 7;
     }
 
-    public int take(int howMany, int lineChosen)
+    public void take(int lineChosen, int howMany)
     {
-        int success = 1;
-
         switch (lineChosen)
         {
             case 1:
@@ -30,10 +28,8 @@ public class Board
                 line[4] -= howMany;
                 break;
             default:
-                success = 0;
+                System.out.println("INVALID LINE");
         }
-
-        return success;
     }
 
     public boolean isFinished()
@@ -47,6 +43,20 @@ public class Board
         }
 
         return true;
+    }
+
+    public void display()
+    {
+        int cnt, cnt2;
+
+        for (cnt = 1; cnt <= line.length - 1; cnt++)
+        {
+            for (cnt2 = 1; cnt2 == line[cnt]; cnt2++)
+            {
+                System.out.print("| ");
+            }
+            System.out.println('\n');
+        }
     }
     
     public int getLineOne()
