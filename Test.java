@@ -4,11 +4,10 @@ public class Test
     {
         Board b = new Board();
         StrategyBot bob = new StrategyBot(b);
-        b.display();
-        b.take(2,3);
-        b.display();
+        b.take(4,1);
         bob.makeStrategicMove();
+        System.out.println(bob.getXORSum());
+        b.take(3,1);
         b.display();
-        System.out.println(bob.getXORByte());
     }
 }

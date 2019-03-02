@@ -78,7 +78,7 @@ public class StrategyBot
         return groups;
     }
 
-    public int getFirstLineWithGroup(int x)
+    public int findFirstLineWithGroup(int x)
     {
         refreshLines();
         int cnt = 0, lineNum = 0;
@@ -125,59 +125,36 @@ public class StrategyBot
     {
         refreshLines();
         int[] groups = getXORByte();
-        int cnt = 0;
-        int accum = 0;
-        int lastGroup = 0, marker2 = 0;
-        int line;
-
-        for (cnt = 0; cnt < groups.length; cnt++)
+        int cnt, firstGroup = 0, lastGroup = 0;
+        if (isGroup(getXORSum()))
+            makeMove(findFirstLineWithGroup(getXORSum()), getXORSum());
+        else if (findFirstLineWith(getXORSum()) != 0 && getXORSum() != 0)
+            makeMove(findFirstLineWith(getXORSum()), getXORSum());
+        else if (findFirstLineWith(getXORSum()) == 0 && getXORSum() != 0)
         {
-            if (groups[cnt] == 1)
-            {
-                lastGroup = cnt;
-                accum++;
-            }
-        }
-
-        lastGroup = getCntToGroup(lastGroup);
-
-        if (accum == 1)
-        {
-            line = getFirstLineWithGroup(lastGroup);
-            makeMove(line, lastGroup);
-        }
-
-        else if (accum == 2)
-        {
-            for (cnt = 0; cnt <= groups.length; cnt++)
+            for (cnt = 0; cnt < groups.length; cnt++)
             {
                 if (groups[cnt] == 1)
                 {
-                    marker2 = cnt;
+                    firstGroup = getCntToGroup(cnt);
                     break;
                 }
             }
 
-            marker2 = getCntToGroup(marker2);
-            
-            line = getFirstLineWithGroup(marker2);
-            System.out.println("LINE: " + line + "\nMARKER2: " + marker2 + "\nLASTGROUP: " + lastGroup);
-            System.out.println("GROUPS: " + Arrays.toString(groups));
-            makeMove(line, lastGroup);
-        }
-
-        else if (accum == 3)
-        {
-            int sum = 0;
-            boolean bool = true;
-
-            if (findFirstLineWith(7) != 0)
+            for (cnt = 0; cnt < groups.length; cnt++)
             {
-                makeMove(findFirstLineWith(7), 7);           
+                if(groups[cnt] == 1)
+                    lastGroup = getCntToGroup(cnt);
             }
-            else
+
+            makeMove(findFirstLineWithGroup(firstGroup), lastGroup);
+        }
+        else
+        {
+            for (cnt = 1; cnt < line.length; cnt++)
             {
-                makeMove(findFirstLineWith(4), 1);
+                if (line[cnt] != 0)
+                    makeMove(cnt, 1);
             }
         }
     }
@@ -185,9 +162,9 @@ public class StrategyBot
     public int findFirstLineWith(int x)
     {
         int cnt;
-        for (cnt = 1; cnt <= 4; cnt++)
+        for (cnt = 1; cnt < line.length; cnt++)
         {
-            if (line[cnt] - x == 0)
+            if (line[cnt] - x >= 0)
                 return cnt;
         }
 
@@ -201,18 +178,34 @@ public class StrategyBot
         switch (marker)
         {
             case 0:
-                marker = 1;
+                marker = 4;
                 break;
             case 1:
                 marker = 2;
                 break;
             case 2:
-                marker = 4;
+                marker = 1;
                 break;
             default:
                 marker = 0;
         }
 
         return marker;
+    }
+
+    public boolean isGroup(int x)
+    {
+        boolean bool = false;
+
+        switch (x)
+        {
+            case 1:
+            case 2:
+            case 4:
+                bool = true;
+                break;
+        }
+
+        return bool;
     }
 }

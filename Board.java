@@ -28,7 +28,7 @@ public class Board
                 line[4] -= howMany;
                 break;
             default:
-                System.out.println("INVALID LINE");
+                System.out.println("INVALID LINE: " + lineChosen);
         }
     }
 
@@ -49,9 +49,9 @@ public class Board
     {
         int cnt, cnt2;
 
-        for (cnt = 1; cnt <= line.length - 1; cnt++)
+        for (cnt = 1; cnt < line.length; cnt++)
         {
-            for (cnt2 = 1; cnt2 == line[cnt]; cnt2++)
+            for (cnt2 = 1; cnt2 <= line[cnt]; cnt2++)
             {
                 System.out.print("| ");
             }
