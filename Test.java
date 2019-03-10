@@ -5,9 +5,15 @@ public class Test
         Board b = new Board();
         StrategyBot bob = new StrategyBot(b);
         b.take(4,1);
-        bob.makeStrategicMove();
-        System.out.println(bob.getXORSum());
+        bob.go();
+        b.take(2,1);
+        bob.go();
+        b.take(2,1);
+        bob.go();
         b.take(3,1);
-        b.display();
+        bob.go();
+        b.take(4,1);
+        bob.state();
+        bob.go();
     }
 }

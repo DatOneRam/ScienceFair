@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class StrategyBot
 {
     private int[] line = new int[5];
@@ -85,7 +83,7 @@ public class StrategyBot
 
         if (x == 1)
         {
-            for (cnt = 1; cnt <= 4; cnt++)
+            for (cnt = 1; cnt < line.length; cnt++)
             {
                 if (line[cnt] % 2 == 1)
                     lineNum = cnt;
@@ -94,18 +92,23 @@ public class StrategyBot
 
         else if (x == 2)
         {
-            for (cnt = 1; cnt <= 4; cnt++)
+            for (cnt = 1; cnt < line.length; cnt++)
             {
-                if (line[cnt] - 4 > 0 && (line[cnt] - 4) % 2 == 0)
+                if (line[cnt] != 0)
                 {
-                    lineNum = cnt;
+                    if ((line[cnt] - 4) / 2.0 >= 1.0 && (line[cnt] != 4))
+                    {
+                        lineNum = cnt;
+                    }
+                    else if (line[cnt] / 2.0 >= 1.0 && line[cnt] != 4);
+                        lineNum = cnt;
                 }
             }
         }
 
         else if (x == 4)
         {
-            for (cnt = 1; cnt <= 4; cnt++)
+            for (cnt = 1; cnt < line.length; cnt++)
             {
                 if (line[cnt] - 4 >= 0)
                     lineNum = cnt;
@@ -125,29 +128,56 @@ public class StrategyBot
     {
         refreshLines();
         int[] groups = getXORByte();
-        int cnt, firstGroup = 0, lastGroup = 0;
-        if (isGroup(getXORSum()))
-            makeMove(findFirstLineWithGroup(getXORSum()), getXORSum());
-        else if (findFirstLineWith(getXORSum()) != 0 && getXORSum() != 0)
-            makeMove(findFirstLineWith(getXORSum()), getXORSum());
-        else if (findFirstLineWith(getXORSum()) == 0 && getXORSum() != 0)
+        int cnt, firstGroup = 0, secondGroup = 0, lastGroup = 0;
+
+        int nums = 0;
+
+        for (cnt = 0; cnt < groups.length; cnt++)
         {
-            for (cnt = 0; cnt < groups.length; cnt++)
+            if (groups[cnt] == 1)
             {
-                if (groups[cnt] == 1)
-                {
-                    firstGroup = getCntToGroup(cnt);
-                    break;
-                }
+                firstGroup = getCntToGroup(cnt);
+                break;
             }
+        }
 
-            for (cnt = 0; cnt < groups.length; cnt++)
+        for (cnt = 0; cnt < groups.length; cnt++)
+        {
+            if(groups[cnt] == 1 && nums < 2)
             {
-                if(groups[cnt] == 1)
-                    lastGroup = getCntToGroup(cnt);
+                secondGroup = getCntToGroup(cnt);
+                nums++;
             }
+        }
 
-            makeMove(findFirstLineWithGroup(firstGroup), lastGroup);
+        for (cnt = 0; cnt < groups.length; cnt++)
+        {
+            if (groups[cnt] == 1)
+                lastGroup = getCntToGroup(cnt);
+        }
+
+        if (isGroup(getXORSum()))
+        {
+            makeMove(findFirstLineWithGroup(getXORSum()), getXORSum());
+        }
+        else if (numberOfLines() == 1)
+        {
+            makeMove(firstLineOpen(), (line[firstLineOpen()] - 1));
+        }
+        else if (numberOfLines() == 2)
+        {
+            if (line[getLargestLine()] == 2 && line[getSmallestLine()] == 1)
+                makeMove(getLargestLine(), line[getLargestLine()]);
+            else
+                makeMove(getLargestLine(), line[getLargestLine()] - line[getSmallestLine()]);
+        }
+        else if (getXORSum() == 7)
+        {
+            makeMove(findFirstLineWith(firstGroup), (firstGroup - lastGroup));
+        }
+        else if (getXORSum() != 0)
+        {
+            makeMove(findFirstLineWithGroup(firstGroup), secondGroup);
         }
         else
         {
@@ -161,6 +191,7 @@ public class StrategyBot
 
     public int findFirstLineWith(int x)
     {
+        refreshLines();
         int cnt;
         for (cnt = 1; cnt < line.length; cnt++)
         {
@@ -173,6 +204,7 @@ public class StrategyBot
 
     public int getCntToGroup(int cnt)
     {
+        refreshLines();
         int marker = cnt;
 
         switch (marker)
@@ -195,6 +227,7 @@ public class StrategyBot
 
     public boolean isGroup(int x)
     {
+        refreshLines();
         boolean bool = false;
 
         switch (x)
@@ -207,5 +240,67 @@ public class StrategyBot
         }
 
         return bool;
+    }
+
+    public int numberOfLines()
+    {
+        refreshLines();
+        int sum = 0;
+        for (int cnt = 1; cnt < line.length; cnt++)
+        {
+            if (line[cnt] > 0)
+            {
+                sum++;
+            }
+        }
+
+        return sum;
+    }
+
+    public int firstLineOpen()
+    {
+        refreshLines();
+        for (int cnt = 1; cnt <= 4; cnt++)
+        {
+            if (line[cnt] != 0)
+                return cnt;
+        }
+
+        return 0;
+    }
+
+    public void state()
+    {
+        refreshLines();
+        field.display();
+        System.out.println(getXORSum());
+    }
+
+    public int getLargestLine()
+    {
+        int l = 0;
+        for (int cnt = 0; cnt < line.length; cnt++)
+        {
+            if (line[cnt] > l)
+                l = line[cnt];
+        }
+        return l;
+    }
+
+    public int getSmallestLine()
+    {
+        int l = 0;
+        for (int cnt = 0; cnt < line.length; cnt++)
+        {
+            if (line[cnt] < l)
+                l = line[cnt];
+        }
+        return l;
+    }
+
+    public void go()
+    {
+        makeStrategicMove();
+        state();
     }
 }
