@@ -100,8 +100,10 @@ public class StrategyBot
                     {
                         lineNum = cnt;
                     }
-                    else if (line[cnt] / 2.0 >= 1.0 && line[cnt] != 4);
+                    else if ((line[cnt] / 2.0) >= 1.0 && line[cnt] != 4)
+                    {
                         lineNum = cnt;
+                    }
                 }
             }
         }
@@ -167,17 +169,22 @@ public class StrategyBot
         else if (numberOfLines() == 2)
         {
             if (line[getLargestLine()] == 2 && line[getSmallestLine()] == 1)
+            {
                 makeMove(getLargestLine(), line[getLargestLine()]);
+            }
             else
+            {
+                System.out.println(line[getLargestLine()] + ", " + line[getSmallestLine()]);
                 makeMove(getLargestLine(), line[getLargestLine()] - line[getSmallestLine()]);
+            }
         }
         else if (getXORSum() == 7)
         {
-            makeMove(findFirstLineWith(firstGroup), (firstGroup - lastGroup));
+            makeMove(findFirstLineWith(firstGroup), (firstGroup + lastGroup));
         }
         else if (getXORSum() != 0)
         {
-            makeMove(findFirstLineWithGroup(firstGroup), secondGroup);
+            makeMove(findFirstLineWithGroup(firstGroup), firstGroup);
         }
         else
         {
@@ -278,21 +285,26 @@ public class StrategyBot
 
     public int getLargestLine()
     {
+        refreshLines();
         int l = 0;
-        for (int cnt = 0; cnt < line.length; cnt++)
+        for (int cnt = 1; cnt < line.length; cnt++)
         {
+            System.out.println((line[cnt] > l) + ": " + line[cnt] + " > " + l);
             if (line[cnt] > l)
+            {
                 l = line[cnt];
+            }
         }
         return l;
     }
 
     public int getSmallestLine()
     {
-        int l = 0;
-        for (int cnt = 0; cnt < line.length; cnt++)
+        refreshLines();
+        int l = 7;
+        for (int cnt = 1; cnt < line.length; cnt++)
         {
-            if (line[cnt] < l)
+            if (line[cnt] < l && line[cnt] > 0)
                 l = line[cnt];
         }
         return l;
@@ -300,6 +312,7 @@ public class StrategyBot
 
     public void go()
     {
+        refreshLines();
         makeStrategicMove();
         state();
     }
