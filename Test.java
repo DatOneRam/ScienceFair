@@ -8,11 +8,10 @@ public class Test
         bob.go();
         b.take(2,1);
         bob.go();
-        b.take(3,1);
-        bob.go();
-        b.take(3,1);
-        bob.go();
         b.take(2,1);
+        bob.state();
+        bob.go();
+        b.take(3,1);
         bob.state();
         bob.go();
     }

@@ -1,3 +1,5 @@
+import javax.lang.model.util.ElementScanner6;
+
 public class StrategyBot
 {
     private int[] line = new int[5];
@@ -158,42 +160,34 @@ public class StrategyBot
                 lastGroup = getCntToGroup(cnt);
         }
 
-        if (isGroup(getXORSum()))
-        {
-            makeMove(findFirstLineWithGroup(getXORSum()), getXORSum());
-        }
-        else if (numberOfLines() == 1)
-        {
-            makeMove(firstLineOpen(), (line[firstLineOpen()] - 1));
-        }
-        else if (numberOfLines() == 2)
-        {
-            if (line[getLargestLine()] == 2 && line[getSmallestLine()] == 1)
-            {
-                makeMove(getLargestLine(), line[getLargestLine()]);
-            }
-            else
-            {
-                System.out.println(line[getLargestLine()] + ", " + line[getSmallestLine()]);
-                makeMove(getLargestLine(), line[getLargestLine()] - line[getSmallestLine()]);
-            }
-        }
-        else if (getXORSum() == 7)
-        {
-            makeMove(findFirstLineWith(firstGroup), (firstGroup + lastGroup));
-        }
-        else if (getXORSum() != 0)
-        {
-            makeMove(findFirstLineWithGroup(firstGroup), firstGroup);
-        }
-        else
-        {
-            for (cnt = 1; cnt < line.length; cnt++)
-            {
-                if (line[cnt] != 0)
-                    makeMove(cnt, 1);
-            }
-        }
+       if (numberOfLines() == 2 && thereAre(1, 1))
+       {
+           makeMove(findFirstLineThatsNot(1), line[findFirstLineThatsNot(1)]);
+       }
+       else if (numberOfLines() == 2)
+       {
+            makeMove(findLargestLine(), line[findLargestLine()] - line[findSmallestLine()]);
+       }
+       else if (numberOfLines() == 3 && thereAre(2, 1))
+       {
+           makeMove(findFirstLineThatsNot(1), line[findFirstLineThatsNot(1)] - 1);
+       }
+       else if (numberOfLines() == 3 && howManyAreSame()[0] == 2)
+       {
+            makeMove(findFirstLineThatsNot(howManyAreSame()[1]), line[findFirstLineThatsNot(howManyAreSame()[1])]);
+       }
+       else if (getXORSum() == 7)
+       {
+            makeMove(findLargestLine(), 5);
+       }
+       else if (numberOfLines() == 3 && findFirstLineWith(7) != 0)
+       {
+           makeMove(findFirstLineWith(7), getXORSum());
+       }
+       else
+       {
+            makeMove(findFirstLineWithGroup(firstGroup), secondGroup + lastGroup);
+       }
     }
 
     public int findFirstLineWith(int x)
@@ -283,31 +277,34 @@ public class StrategyBot
         System.out.println(getXORSum());
     }
 
-    public int getLargestLine()
+    public int findLargestLine()
     {
         refreshLines();
-        int l = 0;
+        int l = 0, c = 0;
         for (int cnt = 1; cnt < line.length; cnt++)
         {
-            System.out.println((line[cnt] > l) + ": " + line[cnt] + " > " + l);
             if (line[cnt] > l)
             {
                 l = line[cnt];
+                c = cnt;
             }
         }
-        return l;
+        return c;
     }
 
-    public int getSmallestLine()
+    public int findSmallestLine()
     {
         refreshLines();
-        int l = 7;
+        int l = 7, c = 0;
         for (int cnt = 1; cnt < line.length; cnt++)
         {
             if (line[cnt] < l && line[cnt] > 0)
+            {
                 l = line[cnt];
+                c = cnt;
+            }
         }
-        return l;
+        return c;
     }
 
     public void go()
@@ -315,5 +312,71 @@ public class StrategyBot
         refreshLines();
         makeStrategicMove();
         state();
+    }
+
+    public boolean thereAre(int howMany, int num)
+    {
+        refreshLines();
+        int hhm = 0;
+        for (int cnt = 1; cnt < line.length; cnt++)
+        {
+            if (line[cnt] == num)
+            {
+                hhm++;
+            }
+        }
+
+        if (hhm == howMany)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public int findFirstLineThatsNot(int x)
+    {
+        for (int cnt = 1; cnt < line.length; cnt++)
+        {
+            if (line[cnt] != x)
+            {
+                return cnt;
+            }
+        }
+
+        return 0;
+    }
+
+    public int[] howManyAreSame()
+    {
+        int same[] = {0,0};
+
+        for (int cnt = 1; cnt < line.length; cnt++)
+        {
+            for (int cntTwo = (cnt + 1); cntTwo <= 4; cntTwo++)
+            {
+                if (line[cnt] == line[cntTwo] && line[cnt] != 0)
+                {
+                    same[0]++;
+                    same[1] = line[cnt];
+                }
+            }
+        }
+
+        for (int cnt = 4; cnt > 0; cnt--)
+        {
+            for (int cntTwo = (cnt - 1); cntTwo > 0; cntTwo--)
+            {
+                if (line[cnt] == line[cntTwo] && line[cnt] != 0)
+                {
+                    same[0]++;
+                    same[1] = line[cnt];
+                }
+            }
+        }
+
+        return same;
     }
 }
