@@ -4,10 +4,10 @@ public class Test
     {
         Board b = new Board();
         StrategyBot bob = new StrategyBot(b);
-        b.take(3,1);
+        b.take(2,1);
         bob.go();
         b.take(4,1);
         bob.state();
-        bob.go();
+        bob.go(); 
     }
 }

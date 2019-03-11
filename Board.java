@@ -13,6 +13,7 @@ public class Board
 
     public void take(int lineChosen, int howMany)
     {
+        //System.out.println("LINE CHOSEN: " + lineChosen + ", AMOUNT: " + howMany);
         switch (lineChosen)
         {
             case 1:

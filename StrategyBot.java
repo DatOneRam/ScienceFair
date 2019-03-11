@@ -1,5 +1,3 @@
-import javax.lang.model.util.ElementScanner6;
-
 public class StrategyBot
 {
     private int[] line = new int[5];
@@ -173,13 +171,16 @@ public class StrategyBot
     public void makeStrategicMove()
     {
         refreshLines();
-        int[] groups = getXORByte();
         int[] rt = getGroups();
         int cnt;
 
         int holdCnt = 0;
-
-       if (numberOfLines() == 2 && thereAre(1, 1))
+         
+       if (numberOfLines() == 2 && findFirstLineThatsNot(1) == 0)
+       {
+           makeMove(findFirstLineWith(1), 1);
+       }
+       else if (numberOfLines() == 2 && thereAre(1, 1))
        {
            makeMove(findFirstLineThatsNot(1), line[findFirstLineThatsNot(1)]);
        }
@@ -195,6 +196,10 @@ public class StrategyBot
        {
             makeMove(findFirstLineThatsNot(howManyAreSame()[1]), line[findFirstLineThatsNot(howManyAreSame()[1])]);
        }
+       else if (getXORSum() == 7 && findLargestLineValue() == 5)
+       {
+            makeMove(findFirstLineWith(5), 3);
+       }
        else if (getXORSum() == 7)
        {
             makeMove(findLargestLine(), 5);
@@ -203,33 +208,35 @@ public class StrategyBot
        {
            makeMove(findFirstLineWith(7), getXORSum());
        }
-       //ok, a couple things wrong with this
-       //1. if you get an evened board, this breaks
-       //2. ???????? what
        else
        {
-           if (getXORSum() != 1)
-           {
-                makeMove(findFirstLineWithGroup(rt[0]), rt[1] + rt[2]);
-           }
-           else
+           if (getXORSum() == 1)
            {
                 makeMove(findFirstLineWithGroup(rt[0]), rt[0]);
            }
+           else
+           {
+                makeMove(findFirstLineWithGroup(rt[0]), rt[1] + rt[2]);  
+           }
        }
+       //evened board issue
     }
 
     public int findFirstLineWith(int x)
     {
         refreshLines();
-        int cnt;
+        int cnt, ret = 0;
+
         for (cnt = 1; cnt < line.length; cnt++)
         {
             if (line[cnt] - x >= 0)
-                return cnt;
-        }
+            {
+                ret = cnt;
+                break;
+            }
 
-        return 0;
+        }
+            return ret;
     }
 
     public int getCntToGroup(int cnt)
@@ -314,11 +321,24 @@ public class StrategyBot
         {
             if (line[cnt] > l)
             {
-                l = line[cnt];
                 c = cnt;
             }
         }
         return c;
+    }
+
+    public int findLargestLineValue()
+    {
+        refreshLines();
+        int l = 0, c = 0;
+        for (int cnt = 1; cnt < line.length; cnt++)
+        {
+            if (line[cnt] > l)
+            {
+                l = line[cnt];
+            }
+        }
+        return l;
     }
 
     public int findSmallestLine()
