@@ -87,7 +87,7 @@ public class StrategyBot
         {
             for (cnt = 1; cnt < line.length; cnt++)
             {
-                if (line[cnt] % 2 == 1)
+                if (line[cnt] % 2 == 1 || line[cnt] == 1)
                     lineNum = cnt;
             }
         }
@@ -128,37 +128,56 @@ public class StrategyBot
         field.take(ln, nm);
     }
 
+    public int[] getGroups()
+    {
+        int sum = getXORSum(), firstGroup = 0, secondGroup = 0, lastGroup = 0;
+
+        if (sum == 1)
+        {
+            firstGroup = 1;
+        }
+        else if (sum == 2)
+        {
+            firstGroup = 2;
+        }
+        else if (sum == 3)
+        {
+            firstGroup = 2;
+            secondGroup = 1;
+        }
+        else if (sum == 4)
+        {
+            firstGroup = 4;
+        }
+        else if (sum == 5)
+        {
+            firstGroup = 4;
+            lastGroup = 1;
+        }
+        else if (sum == 6)
+        {
+            firstGroup = 4;
+            lastGroup = 2;
+        }
+        else if (sum == 7)
+        {
+            firstGroup = 4;
+            secondGroup = 2;
+            lastGroup = 1;
+        }
+
+        int[] rt = {firstGroup, secondGroup, lastGroup};
+        return rt;
+    }
+
     public void makeStrategicMove()
     {
         refreshLines();
         int[] groups = getXORByte();
-        int cnt, firstGroup = 0, secondGroup = 0, lastGroup = 0;
+        int[] rt = getGroups();
+        int cnt;
 
-        int nums = 0;
-
-        for (cnt = 0; cnt < groups.length; cnt++)
-        {
-            if (groups[cnt] == 1)
-            {
-                firstGroup = getCntToGroup(cnt);
-                break;
-            }
-        }
-
-        for (cnt = 0; cnt < groups.length; cnt++)
-        {
-            if(groups[cnt] == 1 && nums < 2)
-            {
-                secondGroup = getCntToGroup(cnt);
-                nums++;
-            }
-        }
-
-        for (cnt = 0; cnt < groups.length; cnt++)
-        {
-            if (groups[cnt] == 1)
-                lastGroup = getCntToGroup(cnt);
-        }
+        int holdCnt = 0;
 
        if (numberOfLines() == 2 && thereAre(1, 1))
        {
@@ -184,9 +203,19 @@ public class StrategyBot
        {
            makeMove(findFirstLineWith(7), getXORSum());
        }
+       //ok, a couple things wrong with this
+       //1. if you get an evened board, this breaks
+       //2. ???????? what
        else
        {
-            makeMove(findFirstLineWithGroup(firstGroup), secondGroup + lastGroup);
+           if (getXORSum() != 1)
+           {
+                makeMove(findFirstLineWithGroup(rt[0]), rt[1] + rt[2]);
+           }
+           else
+           {
+                makeMove(findFirstLineWithGroup(rt[0]), rt[0]);
+           }
        }
     }
 
@@ -340,7 +369,7 @@ public class StrategyBot
     {
         for (int cnt = 1; cnt < line.length; cnt++)
         {
-            if (line[cnt] != x)
+            if (line[cnt] != x && line[cnt] != 0)
             {
                 return cnt;
             }
