@@ -216,6 +216,10 @@ public class StrategyBot
            }
            else
            {
+                if (findFirstLineWithGroups(getGroups()) != 0)
+                {
+                    makeMove(findFirstLineWithGroups(getGroups()), getXORSum());
+                }
                 makeMove(findFirstLineWithGroup(rt[0]), rt[1] + rt[2]);  
            }
        }
@@ -237,6 +241,24 @@ public class StrategyBot
 
         }
             return ret;
+    }
+
+    public int findFirstLineWithGroups(int[] request)
+    {
+         int linea = 0;
+        for (int cnt = 1; cnt < line.length; cnt++)
+        {
+            if (findFirstLineWith(request[0]) != 0)
+            {
+                if (line[findFirstLineWith(request[0])] - request[0] - request[1] >= 0)
+                {
+                    if (line[findFirstLineWith(request[0])] - request[0] - request[1] - request[2] >= 0)
+                        linea = findFirstLineWith(request[0]);
+                }
+            }
+        }
+
+        return linea;
     }
 
     public int getCntToGroup(int cnt)
