@@ -1,9 +1,11 @@
-public class StrategyBot
+import java.util.Random;
+
+public class NimBot
 {
     private int[] line = new int[5];
     private Board field;
 
-    public StrategyBot(Board f)
+    public NimBot(Board f)
     {
         line[0] = 0;
         field = f;
@@ -100,7 +102,7 @@ public class StrategyBot
                     {
                         lineNum = cnt;
                     }
-                    else if ((line[cnt] / 2.0) >= 1.0 && line[cnt] != 4)
+                    else if ((line[cnt] / 2.0) >= 1.0 && line[cnt] < 4)
                     {
                         lineNum = cnt;
                     }
@@ -172,9 +174,6 @@ public class StrategyBot
     {
         refreshLines();
         int[] rt = getGroups();
-        int cnt;
-
-        int holdCnt = 0;
          
        if (numberOfLines() == 2 && findFirstLineThatsNot(1) == 0)
        {
@@ -220,10 +219,26 @@ public class StrategyBot
                 {
                     makeMove(findFirstLineWithGroups(getGroups()), getXORSum());
                 }
-                makeMove(findFirstLineWithGroup(rt[0]), rt[1] + rt[2]);  
+                else if (getXORSum() != 0)
+                {
+                    System.out.println(findFirstLineWithGroup(2));
+                    makeMove(findFirstLineWithGroup(rt[0]), rt[1] + rt[2]);  
+                }
+                else
+                {
+                    makeRandomMove();
+                }
            }
        }
-       //evened board issue
+    }
+
+    public void makeRandomMove()
+    {
+        int line;
+        Random rand = new Random();
+        line = rand.nextInt(4) + 1;
+        
+        makeMove(line, 1);
     }
 
     public int findFirstLineWith(int x)
@@ -261,45 +276,6 @@ public class StrategyBot
         return linea;
     }
 
-    public int getCntToGroup(int cnt)
-    {
-        refreshLines();
-        int marker = cnt;
-
-        switch (marker)
-        {
-            case 0:
-                marker = 4;
-                break;
-            case 1:
-                marker = 2;
-                break;
-            case 2:
-                marker = 1;
-                break;
-            default:
-                marker = 0;
-        }
-
-        return marker;
-    }
-
-    public boolean isGroup(int x)
-    {
-        refreshLines();
-        boolean bool = false;
-
-        switch (x)
-        {
-            case 1:
-            case 2:
-            case 4:
-                bool = true;
-                break;
-        }
-
-        return bool;
-    }
 
     public int numberOfLines()
     {
