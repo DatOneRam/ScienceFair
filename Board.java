@@ -1,9 +1,14 @@
 public class Board
 {
     private int line[] = new int[5];
+    private NimBot[] player;
+    private int lastPlayer;
 
-    public Board()
+    public Board(NimBot one, NimBot two)
     {
+        player[0] = null;
+        player[1] = one;
+        player[2] = two;
         line[0] = 0;
         line[1] = 1;
         line[2] = 3;
@@ -11,8 +16,9 @@ public class Board
         line[4] = 7;
     }
 
-    public void take(int lineChosen, int howMany)
+    public void take(int lineChosen, int howMany, int player)
     {
+        lastPlayer = player;
         //System.out.println("LINE CHOSEN: " + lineChosen + ", AMOUNT: " + howMany);
         switch (lineChosen)
         {
@@ -36,14 +42,25 @@ public class Board
     public boolean isFinished()
     {
         int i;
+        boolean fin = true;
 
         for (i = 1; i <= 4; i++)
         {
             if (line[i] != 0)
-                return false;
+                fin = false;
         }
-
-        return true;
+        
+        return fin;
+    }
+    
+    public int getWinner()
+    {
+        if (isFinished() == true)
+        {
+            return lastPlayer;
+        }
+        else
+            return 0;
     }
 
     public void display()
