@@ -4,22 +4,17 @@ public class NimBot
 {
     private int[] line = new int[5];
     private Board field;
-    private boolean hasWon;
+    private int playerNumber;
 
-    public NimBot(Board f)
+    public NimBot(Board f, int p)
     {
-        hasWon = false;
         line[0] = 0;
         field = f;
+        playerNumber = p;
         line[1] = field.getLineOne();
         line[2] = field.getLineTwo();
         line[3] = field.getLineThree();
         line[4] = field.getLineFour();
-    }
-    
-    public void setHasWon(boolean bruh)
-    {
-        hasWon = bruh;
     }
 
     public void refreshLines()
@@ -129,14 +124,15 @@ public class NimBot
         return lineNum;
     }
 
-    public void makeMove(int ln, int nm)
+    public void makeMove(int ln, int nm, int bob)
     {
         refreshLines();
-        field.take(ln, nm);
+        field.take(ln, nm, bob);
     }
 
     public int[] getGroups()
     {
+        refreshLines();
         int sum = getXORSum(), firstGroup = 0, secondGroup = 0, lastGroup = 0;
 
         if (sum == 1)
@@ -177,63 +173,77 @@ public class NimBot
         return rt;
     }
 
+    public int findFirstLineThats(int x)
+    {
+        for (int cnt = 1; cnt < line.length; cnt++)
+        {
+            if (line[cnt] == x)
+                return cnt;
+        }
+
+        return 0;
+    }
+
     public void makeStrategicMove()
     {
         refreshLines();
         int[] rt = getGroups();
          
-       if (numberOfLines() == 2 && findFirstLineThatsNot(1) == 0)
+       if (numberOfLines() == 1 && findFirstLineThats(1) != 0)
        {
-           makeMove(findFirstLineWith(1), 1);
+           makeMove(findFirstLineThats(1), 1, playerNumber);
+       }
+       else if (getXORSum() == 0)
+       {
+           makeRandomMove();
+       }
+       else if (numberOfLines() == 2 && findFirstLineThatsNot(1) == 0)
+       {
+           makeMove(findFirstLineWith(1), 1, playerNumber);
        }
        else if (numberOfLines() == 2 && thereAre(1, 1))
        {
-           makeMove(findFirstLineThatsNot(1), line[findFirstLineThatsNot(1)]);
+           makeMove(findFirstLineThatsNot(1), line[findFirstLineThatsNot(1)], playerNumber);
        }
        else if (numberOfLines() == 2)
        {
-            makeMove(findLargestLine(), line[findLargestLine()] - line[findSmallestLine()]);
+            makeMove(findLargestLine(), line[findLargestLine()] - line[findSmallestLine()], playerNumber);
        }
        else if (numberOfLines() == 3 && thereAre(2, 1))
        {
-           makeMove(findFirstLineThatsNot(1), line[findFirstLineThatsNot(1)] - 1);
+           makeMove(findFirstLineThatsNot(1), line[findFirstLineThatsNot(1)] - 1, playerNumber);
        }
        else if (numberOfLines() == 3 && howManyAreSame()[0] == 2)
        {
-            makeMove(findFirstLineThatsNot(howManyAreSame()[1]), line[findFirstLineThatsNot(howManyAreSame()[1])]);
+            makeMove(findFirstLineThatsNot(howManyAreSame()[1]), line[findFirstLineThatsNot(howManyAreSame()[1])], playerNumber);
        }
        else if (getXORSum() == 7 && findLargestLineValue() == 5)
        {
-            makeMove(findFirstLineWith(5), 3);
+            makeMove(findFirstLineWith(5), 3, playerNumber);
        }
        else if (getXORSum() == 7)
        {
-            makeMove(findLargestLine(), 5);
+            makeMove(findLargestLine(), 5, playerNumber);
        }
        else if (numberOfLines() == 3 && findFirstLineWith(7) != 0)
        {
-           makeMove(findFirstLineWith(7), getXORSum());
+           makeMove(findFirstLineWith(7), getXORSum(), playerNumber);
        }
        else
        {
            if (getXORSum() == 1)
            {
-                makeMove(findFirstLineWithGroup(rt[0]), rt[0]);
+                makeMove(findFirstLineWithGroup(rt[0]), rt[0], playerNumber);
            }
            else
            {
                 if (findFirstLineWithGroups(getGroups()) != 0)
                 {
-                    makeMove(findFirstLineWithGroups(getGroups()), getXORSum());
-                }
-                else if (getXORSum() != 0)
-                {
-                    System.out.println(findFirstLineWithGroup(2));
-                    makeMove(findFirstLineWithGroup(rt[0]), rt[1] + rt[2]);  
+                    makeMove(findFirstLineWithGroups(getGroups()), getXORSum(), playerNumber);
                 }
                 else
                 {
-                    makeRandomMove();
+                    makeMove(findFirstLineWithGroup(rt[0]), rt[1] + rt[2], playerNumber);  
                 }
            }
        }
@@ -241,11 +251,28 @@ public class NimBot
 
     public void makeRandomMove()
     {
-        int line;
+        refreshLines();
+        int linex, amount;
         Random rand = new Random();
-        line = rand.nextInt(4) + 1;
+        do
+        {
+            linex = rand.nextInt(4) + 1;
+        }
+        while(line[linex] <= 0);
+        amount= rand.nextInt(line[linex]) + 1;
         
-        makeMove(line, 1);
+        makeMove(linex, amount, playerNumber);
+    }
+
+    public int findFirstLineThatsGreaterThan(int x)
+    {
+        for (int cnt = 0; cnt < line.length; cnt++)
+        {
+            if (line[cnt] > 0)
+                return cnt;
+        } 
+        
+        return 0;
     }
 
     public int findFirstLineWith(int x)
@@ -267,7 +294,8 @@ public class NimBot
 
     public int findFirstLineWithGroups(int[] request)
     {
-         int linea = 0;
+        refreshLines();
+        int linea = 0;
         for (int cnt = 1; cnt < line.length; cnt++)
         {
             if (findFirstLineWith(request[0]) != 0)
@@ -392,6 +420,7 @@ public class NimBot
 
     public int findFirstLineThatsNot(int x)
     {
+        refreshLines();
         for (int cnt = 1; cnt < line.length; cnt++)
         {
             if (line[cnt] != x && line[cnt] != 0)
@@ -405,6 +434,7 @@ public class NimBot
 
     public int[] howManyAreSame()
     {
+        refreshLines();
         int same[] = {0,0};
 
         for (int cnt = 1; cnt < line.length; cnt++)

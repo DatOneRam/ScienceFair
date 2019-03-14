@@ -1,19 +1,24 @@
 public class Board
 {
     private int line[] = new int[5];
-    private NimBot[] player;
+    private NimBot[] player = new NimBot[3];
     private int lastPlayer;
 
-    public Board(NimBot one, NimBot two)
+
+    public Board()
     {
-        player[0] = null;
-        player[1] = one;
-        player[2] = two;
         line[0] = 0;
         line[1] = 1;
         line[2] = 3;
         line[3] = 5;
         line[4] = 7;
+    }
+
+    public void setPlayers(NimBot one, NimBot two)
+    {
+        player[0] = one;
+        player[1] = one;
+        player[2] = two;
     }
 
     public void take(int lineChosen, int howMany, int player)
@@ -44,9 +49,9 @@ public class Board
         int i;
         boolean fin = true;
 
-        for (i = 1; i <= 4; i++)
+        for (i = 1; i < line.length; i++)
         {
-            if (line[i] != 0)
+            if (line[i] > 0)
                 fin = false;
         }
         
@@ -55,12 +60,22 @@ public class Board
     
     public int getWinner()
     {
+        int winner = 0;
+
         if (isFinished() == true)
         {
-            return lastPlayer;
+            switch (lastPlayer)
+            {
+                case 1:
+                    winner = 2;
+                    break;
+                case 2:
+                    winner = 1;
+                    break;
+            }
         }
-        else
-            return 0;
+
+        return winner;
     }
 
     public void display()
@@ -75,6 +90,22 @@ public class Board
             }
             System.out.println('\n');
         }
+    }
+
+    public int playSFRound()
+    {
+        do
+        {
+            player[1].makeStrategicMove();
+            //System.out.println("Strategy Bot went.");
+            if (isFinished())
+                break;
+            player[2].makeRandomMove();
+            //System.out.println("NoStrategy Bot went.");
+        }
+        while (getWinner() == 0);
+
+        return getWinner();
     }
     
     public int getLineOne()
