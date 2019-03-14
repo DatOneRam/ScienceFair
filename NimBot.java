@@ -363,7 +363,7 @@ public class NimBot
     public int findLargestLineValue()
     {
         refreshLines();
-        int l = 0, c = 0;
+        int l = 0;
         for (int cnt = 1; cnt < line.length; cnt++)
         {
             if (line[cnt] > l)
