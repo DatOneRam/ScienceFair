@@ -4,15 +4,22 @@ public class NimBot
 {
     private int[] line = new int[5];
     private Board field;
+    private boolean hasWon;
 
     public NimBot(Board f)
     {
+        hasWon = false;
         line[0] = 0;
         field = f;
         line[1] = field.getLineOne();
         line[2] = field.getLineTwo();
         line[3] = field.getLineThree();
         line[4] = field.getLineFour();
+    }
+    
+    public void setHasWon(boolean bruh)
+    {
+        hasWon = bruh;
     }
 
     public void refreshLines()
