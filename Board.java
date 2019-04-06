@@ -107,6 +107,22 @@ public class Board
 
         return getWinner();
     }
+
+    public int playSFRoundControl()
+    {
+        do
+        {
+            player[1].makeRandomMove();
+            //System.out.println("Strategy Bot went.");
+            if (isFinished())
+                break;
+            player[2].makeRandomMove();
+            //System.out.println("NoStrategy Bot went.");
+        }
+        while (getWinner() == 0);
+
+        return getWinner();
+    }
     
     public int getLineOne()
     {

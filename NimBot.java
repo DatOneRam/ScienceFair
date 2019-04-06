@@ -195,7 +195,7 @@ public class NimBot
        }
        else if (getXORSum() == 0)
        {
-           makeRandomMove();
+           makeRandomStratMove();
        }
        else if (numberOfLines() == 2 && findFirstLineThatsNot(1) == 0)
        {
@@ -262,6 +262,20 @@ public class NimBot
         amount= rand.nextInt(line[linex]) + 1;
         
         makeMove(linex, amount, playerNumber);
+    }
+
+    public void makeRandomStratMove()
+    {
+        refreshLines();
+        int linex;
+        Random rand = new Random();
+        do
+        {
+            linex = rand.nextInt(4) + 1;
+        }
+        while(line[linex] <= 0);
+        
+        makeMove(linex, 1, playerNumber);
     }
 
     public int findFirstLineThatsGreaterThan(int x)
