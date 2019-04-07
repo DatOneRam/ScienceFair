@@ -17,6 +17,19 @@ public class Board
         position = x;
     }
 
+    //method to get whose player its turn it is
+    public int getPlayer()
+    {
+        return position[4];
+    }
+
+    public boolean hasEnded()
+    {
+        if (position[0] == 0 && position[1] == 0 && position[2] == 0 && position[3] == 0)
+            return true;
+        else
+            return false;
+    }
 
     //method to get all the possible positions you could get by taking one from a heap
     public ArrayList<int[]> getSimpleMoves()
@@ -48,7 +61,6 @@ public class Board
         {
             x.add(i, copy(position));
             x.get(i)[4] = toggle(x.get(i)[4]);
-            x.set(i, copy(position));
             x.get(i)[j] = x.get(i-1)[j] - 1;
             i++;
             if (x.get(i-1)[j] == 0)
@@ -69,6 +81,28 @@ public class Board
         return x;
     }
 
+    //method to get a list of all winning moves you can make
+    public ArrayList<int[]> getGoodMoves()
+    {
+        ArrayList<int[]> g = getMoves();
+        for (int i = 0; i < g.size(); i++)
+        {
+            if (XORSum(g.get(i)) != 0)
+            {
+                g.remove(i);
+            }
+        }
+
+        return g;
+    }
+
+    //method to get the xor sum
+    public int XORSum(int[] k)
+    {
+        return (k[0] ^ k[1] ^ k[2] ^ k[3]);
+    }
+
+    //method to trim an ArrayList to good stuff
     public void resize(ArrayList<int[]> x)
     {
         int[] check = {0,0,0,0,0};
@@ -119,18 +153,21 @@ public class Board
         return true;
     }
 
-    // public void resize(int[][] x)
-    // {
-    //     int[] checkZero = {0,0,0,0,0};
-    //     int[] checkFull = {}
-    //     int[x.length][x[1].length] y;
-    //     for (int i = 0; i < x.length; i++)
-    //     {
-    //         if (sameAs(x[i], check))
-    //         {zz zz
-    //             break;
+    public int playRound()
+    {
+        Board board = new Board();
+        NimBot strat = new NimBot(board);
+        NimBot rand = new NimBot(board);
 
-    //         }
-    //     }
-    // }
+        do
+        {
+            strat.makeStrategicMove();
+            if (board.hasEnded())
+                break;
+            rand.makeRandomMove();
+        }
+        while (!board.hasEnded());
+
+        return board.getPlayer();
+    }
 }

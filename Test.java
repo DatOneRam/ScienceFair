@@ -6,12 +6,21 @@ public class Test
     public static void main(String[] args)
     {
         Board board = new Board();
-        ArrayList<int[]> simple = board.getSimpleMoves();
-        ArrayList<int[]> moves = board.getMoves();
-
-        for (int i = 0; i < moves.size(); i++)
+        int rounds = 0;
+        int randWins = 0;
+        int stratWins = 0;
+        int tempWin;
+        do
         {
-            System.out.println(Arrays.toString(moves.get(i)));
+            tempWin = board.playRound();
+            if (tempWin == 0)
+                stratWins++;
+            else
+                randWins++;
         }
+        while (rounds <= 10000);
+
+        System.out.println("StratWins: " + stratWins);
+        System.out.println("RandWins: " + randWins);
     }
 }
