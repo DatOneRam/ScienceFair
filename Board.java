@@ -36,7 +36,7 @@ public class Board
     {
         ArrayList<int[]> x = new ArrayList<int[]>(4);
 
-        for (int i = 0; i < x.size(); i++)
+        for (int i = 0; i < 4; i++)
         {
             x.add(copy(position));
             x.get(i)[i] = position[i] - 1;
@@ -53,22 +53,28 @@ public class Board
     //method to get all possible moves
     public ArrayList<int[]> getMoves()
     {
-        ArrayList<int[]> x = new ArrayList<int[]>(100);
+        ArrayList<int[]> x = new ArrayList<int[]>();
         int j = 0, i = 1;
 
         x.add(0, copy(position));
-        while (x.get(i - 1)[j] != 0)
+        do
         {
             x.add(i, copy(position));
-            x.get(i)[4] = toggle(x.get(i)[4]);
+            if (x.get(i-1)[j] == 0)
+                j++;
             x.get(i)[j] = x.get(i-1)[j] - 1;
             i++;
             if (x.get(i-1)[j] == 0)
             {
                 j++;
+                if (j == 5)
+                {
+                    break;
+                }
             }
             
         }
+        while(x.get(i - 1)[j] != 0);
 
         for (int r = 0; r < x.size(); r++)
         {
@@ -77,6 +83,7 @@ public class Board
 
         x.remove(0);
         //resize(x);
+
 
         return x;
     }
