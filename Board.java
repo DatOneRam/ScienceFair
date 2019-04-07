@@ -39,30 +39,36 @@ public class Board
         int j = 0, i = 1;
 
         x[0] = copy(position);
-        
         while (x[i-1][j] != 0)
         {
+            x[i][4] = toggle(x[i][4]);
             x[i] = copy(position);
             x[i][j] = x[i-1][j] - 1;
             i++;
             if (x[i-1][j] == 0)
             {
                 j++;
-                continue;
             }
         }
+
+        x[0][0] = 0;
+        x[0][1] = 0;
+        x[0][2] = 0;
+        x[0][3] = 0;
+        x[0][4] = 0;
 
         return x;
     }
 
     public int toggle(int a)
     {
+        int ret;
         if (a == 1)
-            a = 0;
+            ret = 0;
         else
-            a = 1;
+            ret = 1;
 
-        return a;
+        return ret;
     }
 
     public int[] copy(int[] y)
@@ -91,8 +97,18 @@ public class Board
         return true;
     }
 
-    public void resize(int[][] x)
-    {
-        
-    }
+    // public void resize(int[][] x)
+    // {
+    //     int[] checkZero = {0,0,0,0,0};
+    //     int[] checkFull = {}
+    //     int[x.length][x[1].length] y;
+    //     for (int i = 0; i < x.length; i++)
+    //     {
+    //         if (sameAs(x[i], check))
+    //         {zz zz
+    //             break;
+
+    //         }
+    //     }
+    // }
 }
