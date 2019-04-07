@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Board
 {
     //holds all the line's units and whose turn it is
@@ -17,47 +19,67 @@ public class Board
 
 
     //method to get all the possible positions you could get by taking one from a heap
-    public int[][] getSimpleMoves()
+    public ArrayList<int[]> getSimpleMoves()
     {
-        int[][] x = new int[4][5];
+        ArrayList<int[]> x = new ArrayList<int[]>(4);
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < x.size(); i++)
         {
-            x[i] = copy(position);
-            x[i][i] = position[i] - 1;
-            x[i][4] = toggle(x[i][4]);
-            if (x[i][i] < 0)
-                x[i][i] = 0;
+            x.add(copy(position));
+            x.get(i)[i] = position[i] - 1;
+            x.get(i)[4] = toggle(x.get(i)[4]);
+            if (x.get(i)[i] < 0)
+                x.get(i)[i] = 0;
         }
+
+        //resize(x);
 
         return x;
     }
 
-    public int[][] getMoves()
+    //method to get all possible moves
+    public ArrayList<int[]> getMoves()
     {
-        int[][] x = new int[100][5];
+        ArrayList<int[]> x = new ArrayList<int[]>(100);
         int j = 0, i = 1;
 
-        x[0] = copy(position);
-        while (x[i-1][j] != 0)
+        x.add(0, copy(position));
+        while (x.get(i - 1)[j] != 0)
         {
-            x[i][4] = toggle(x[i][4]);
-            x[i] = copy(position);
-            x[i][j] = x[i-1][j] - 1;
+            x.add(i, copy(position));
+            x.get(i)[4] = toggle(x.get(i)[4]);
+            x.set(i, copy(position));
+            x.get(i)[j] = x.get(i-1)[j] - 1;
             i++;
-            if (x[i-1][j] == 0)
+            if (x.get(i-1)[j] == 0)
             {
                 j++;
             }
+            
         }
 
-        x[0][0] = 0;
-        x[0][1] = 0;
-        x[0][2] = 0;
-        x[0][3] = 0;
-        x[0][4] = 0;
+        for (int r = 0; r < x.size(); r++)
+        {
+            x.get(r)[4] = toggle(x.get(r)[4]);
+        }
+
+        x.remove(0);
+        //resize(x);
 
         return x;
+    }
+
+    public void resize(ArrayList<int[]> x)
+    {
+        int[] check = {0,0,0,0,0};
+        int[] check1 = {0,0,0,0,1};
+        for (int i = 0; i < x.size(); i++)
+        {
+            if (sameAs(x.get(i), check) || sameAs(x.get(i), check1))
+            {
+                x.remove(i);
+            }
+        }
     }
 
     public int toggle(int a)
