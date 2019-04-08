@@ -65,10 +65,10 @@ public class NimBot
         int line = 0;
         do
         {
-            line = rand.nextInt(4);
+            line = rand.nextInt(4) + 1;
         }
-        while (temp[line] > 0);
-        b.take(line + 1, rand.nextInt(temp[line]) + 1);
+        while (temp[line - 1] <= 0);
+        b.take(line, rand.nextInt(temp[line - 1]) + 1);
     }
 
     public int getXORSum(int[] a)

@@ -25,7 +25,7 @@ public class Board
 
     public boolean hasEnded()
     {
-        if (lines[0] + lines[1] + lines[2] + lines[3] == 0)
+        if (lines[0] + lines[1] + lines[2] + lines[3] < 0)
         {
             return true;
         }
@@ -34,14 +34,15 @@ public class Board
 
     public int playRound()
     {
-        NimBot strat = new NimBot(this);
-        NimBot rand = new NimBot(this);
+        Board b = new Board();
+        NimBot strat = new NimBot(b);
+        NimBot rand = new NimBot(b);
         do
         {
             strat.makeStrategicMove();
             if (hasEnded())
                 return 0;     
-            rand.makeRandomMove();
+            strat.makeRandomMove();
         }
         while(!hasEnded());
 
