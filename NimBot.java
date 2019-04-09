@@ -24,7 +24,7 @@ public class NimBot
             do
             {
                 //if you can take some, take some and check to see if good
-                if (temp[j] > 0 && temp[j] != 0)
+                if (temp[j] > 0)
                 {
                     temp[j]--;
                     if (getXORSum(temp) == 0)

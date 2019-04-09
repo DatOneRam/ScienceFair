@@ -8,7 +8,12 @@ public class Board
     }
     public void setLines(int[] x)
     {
-        lines = x;
+        for (int i = 0; i < x.length; i++)
+        {
+            if (x[i] < 0)
+                x[i] = 0;
+        }
+        lines = copy(x);
     }    
 
     public void take(int line, int cnt)
@@ -45,5 +50,15 @@ public class Board
         while(!hasEnded());
 
         return 1;
+    }
+
+    public int[] copy(int[] y)
+    {
+        int[] z = new int[y.length];
+        for (int i = 0; i < y.length; i++)
+            z[i] = y[i];
+
+        return z;
+
     }
 }
