@@ -5,6 +5,29 @@ public class Test
 {
     public static void main(String args[])
     {
+
+        Board b = new Board();
+        NimBot bot  = new NimBot(b);
+        System.out.println("start:" + Arrays.toString(b.getLines()));  
+        bot.makeStrategicMove();
+        System.out.println("s:" + Arrays.toString(b.getLines()));  
+        bot.makeRandomMove();
+        System.out.println("r" + Arrays.toString(b.getLines()));  
+        bot.makeStrategicMove();
+        System.out.println("s" + Arrays.toString(b.getLines()));  
+        bot.makeRandomMove();
+        System.out.println("r" + Arrays.toString(b.getLines()));  
+        bot.makeStrategicMove();
+        System.out.println("s" + Arrays.toString(b.getLines()));  
+        bot.makeRandomMove();
+        System.out.println("r" + Arrays.toString(b.getLines()));   
+        bot.makeStrategicMove();
+        System.out.println("s" + Arrays.toString(b.getLines()));   
+        bot.makeRandomMove();
+        System.out.println("r" + Arrays.toString(b.getLines()));  
+        bot.makeStrategicMove();
+        System.out.println("s" + Arrays.toString(b.getLines()));  
+
         // Board b = new Board();
 //         NimBot strat = new NimBot(b);
 //         NimBot rand = new NimBot(b);
@@ -29,12 +52,13 @@ public class Test
 //         
 //         System.out.println(win);
 
-          Board b = new Board();
-          b.take(1,1);
-          b.take(2,3);
-          b.take(3,5);
-          b.take(4,7);
-          System.out.println(b.hasEnded());
+        //   Board b = new Board();
+        //   b.take(1,1);
+        //   b.take(2,3);
+        //   b.take(3,5);
+        //   b.take(4,7);
+        //   System.out.println(b.hasEnded());
+        //   System.out.println(Arrays.toString(b.getLines()));
 
          // Board b = new Board();
 //          System.out.println(b.playRound());

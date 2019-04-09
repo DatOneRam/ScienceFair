@@ -1,5 +1,3 @@
-import java.nio.IntBuffer;
-
 public class Board
 {
     private int[] lines = {1, 3, 5, 7};
@@ -25,7 +23,7 @@ public class Board
 
     public boolean hasEnded()
     {
-        if (lines[0] + lines[1] + lines[2] + lines[3] < 0)
+        if (lines[0] + lines[1] + lines[2] + lines[3] <= 0)
         {
             return true;
         }

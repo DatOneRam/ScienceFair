@@ -24,7 +24,7 @@ public class NimBot
             do
             {
                 //if you can take some, take some and check to see if good
-                if (temp[j] > 0)
+                if (temp[j] > 0 && temp[j] != 0)
                 {
                     temp[j]--;
                     if (getXORSum(temp) == 0)
@@ -71,10 +71,22 @@ public class NimBot
         b.take(line, rand.nextInt(temp[line - 1]) + 1);
     }
 
+    public boolean isEndgame()
+    {
+        if (numberOfLinesThatArent(1) <= 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public int getXORSum(int[] a)
     {
         //sSystem.out.println(a[0] ^ a[1] ^ a[2] ^ a[3]);
-        return a[0] ^ a[1] ^ a[2] ^ a[3];
+        if (!isEndgame())
+            return a[0] ^ a[1] ^ a[2] ^ a[3];
+        else
+            return 1 - (a[0] ^ a[1] ^ a[2] ^ a[3]);
     }
 
     public int[] copy(int[] y)
@@ -85,5 +97,19 @@ public class NimBot
 
         return z;
 
+    }
+
+    public int numberOfLinesThatArent(int a)
+    {
+        int sum = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            if (b.getLines()[i] != a && b.getLines()[i] != 0)
+            {
+                sum++;
+            }
+        }
+
+        return sum;
     }
 }
