@@ -12,20 +12,21 @@ public class NimBot
 
     public void makeStrategicMove()
     {
-        if (b.getXORSum() == 0)
+        int[] temp = copy(b.getLines());
+        if (getXORSum(temp) == 0)
         {
+            //System.out.println("did a bad bad");
             makeSimpleMove();
         }
         else
         {
-            //temp is same as lines
-            int[] temp = copy(b.getLines());
             int j = 0;
             do
             {
                 //if you can take some, take some and check to see if good
                 if (temp[j] > 0)
                 {
+                    //System.out.println("I AM DOING STRAT");
                     temp[j]--;
                     if (getXORSum(temp) == 0)
                     {
@@ -36,6 +37,7 @@ public class NimBot
                 //if you cant take some, reset and check next lines
                 else
                 {
+                    //System.out.println("I HAVE SKIPPED THAT PART");
                     temp = copy(b.getLines());
                     j++;
                     continue;
@@ -48,11 +50,11 @@ public class NimBot
     public void makeSimpleMove()
     {
         int[] temp = copy(b.getLines());
-        for (int i = 1; i < temp.length; i++)
+        for (int i = 0; i < temp.length; i++)
         {
-            if (temp[i] != 0)
+            if (temp[i] > 0)
             {
-                b.take(i, 1);
+                b.take(i + 1, 1);
                 break;
             }
         }
