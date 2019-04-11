@@ -17,7 +17,7 @@ public class Test
         for (int rep = 1; rep <= 3; rep++)
         {
             PrintWriter pw = new PrintWriter("experimentalResults" + rep + ".txt");
-            for (cnt = 1; cnt <= 10000; cnt++)
+            for (cnt = 1; cnt <= 100000; cnt++)
             {
                 System.out.println(cnt);
                 switch (playExperimentalRound())
@@ -52,7 +52,7 @@ public class Test
         for (int repe = 1; repe <= 3; repe++)
         {
             PrintWriter pwr = new PrintWriter("controlResults" + repe + ".txt");
-            for (cnte = 1; cnte <= 10000; cnte++)
+            for (cnte = 1; cnte <= 100000; cnte++)
             {
                 System.out.println(cnte);
                 switch (playControlRound())
