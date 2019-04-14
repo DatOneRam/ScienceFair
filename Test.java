@@ -41,7 +41,7 @@ public class Test
             }
 
             // System.out.println("\nFINAL RESULTS:");
-            pw.println("\nFINAL RESULTS:");
+            pw.println("\nTRIAL " + rep + ":");
             // System.out.println("\tSTRATEGY WINS: " + stratWins);
             pw.println("\tSTRATEGY WINS: " + stratWins);
             // System.out.println("\tRANDOM WINS: " + randWins);
@@ -82,7 +82,7 @@ public class Test
             }
 
             // System.out.println("\nFINAL RESULTS:");
-            pwr.println("\nFINAL RESULTS:");
+            pwr.println("\nTRIAL " + repe + ":");
             // System.out.println("\tSTRATEGY WINS: " + stratWins);
             pwr.println("\tBOT ONE WINS: " + stratWins);
             // System.out.println("\tRANDOM WINS: " + randWins);
