@@ -14,11 +14,12 @@ public class Test
 
         System.out.println("Starting experimental...");
 
+        PrintWriter pw = new PrintWriter("experimentalResults.txt");
+
         for (int rep = 1; rep <= 3; rep++)
         {
             stratWins = 0;
             randWins = 0;
-            PrintWriter pw = new PrintWriter("experimentalResults" + rep + ".txt");
             for (cnt = 1; cnt <= 10000; cnt++)
             {
                 System.out.println(cnt);
@@ -44,18 +45,21 @@ public class Test
             // System.out.println("\tSTRATEGY WINS: " + stratWins);
             pw.println("\tSTRATEGY WINS: " + stratWins);
             // System.out.println("\tRANDOM WINS: " + randWins);
-            pw.println("\tRANDOM WINS: " + randWins);
+            pw.println("\tRANDOM WINS: " + randWins + '\n');
 
-            pw.close();
 	        System.out.println("Experimental end.");
         }
 
+        pw.close();
+
         System.out.print("control start");
+
+        PrintWriter pwr = new PrintWriter("controlResults.txt");
+
         for (int repe = 1; repe <= 3; repe++)
         {
             stratWins = 0;
             randWins = 0;
-            PrintWriter pwr = new PrintWriter("controlResults" + repe + ".txt");
             for (cnte = 1; cnte <= 10000; cnte++)
             {
                 System.out.println(cnte);
@@ -82,10 +86,10 @@ public class Test
             // System.out.println("\tSTRATEGY WINS: " + stratWins);
             pwr.println("\tBOT ONE WINS: " + stratWins);
             // System.out.println("\tRANDOM WINS: " + randWins);
-            pwr.println("\tBOT TWO WINS: " + randWins);
-
-            pwr.close();
+            pwr.println("\tBOT TWO WINS: " + randWins + '\n');
         }
+
+        pwr.close();
     }
 
     public static boolean hasEnded(Board b)

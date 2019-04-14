@@ -35,23 +35,6 @@ public class Board
         return false;
     }
 
-    public int playRound()
-    {
-        Board b = new Board();
-        NimBot strat = new NimBot(b);
-        NimBot rand = new NimBot(b);
-        do
-        {
-            strat.makeStrategicMove();
-            if (hasEnded())
-                return 0;     
-            strat.makeRandomMove();
-        }
-        while(!hasEnded());
-
-        return 1;
-    }
-
     public int[] copy(int[] y)
     {
         int[] z = new int[y.length];
