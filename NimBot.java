@@ -15,7 +15,6 @@ public class NimBot
         int[] temp = copy(b.getLines());
         if (getXORSum(temp) == 0)
         {
-            //System.out.println("did a bad bad");
             makeSimpleMove();
         }
         else
@@ -26,7 +25,6 @@ public class NimBot
                 //if you can take some, take some and check to see if good
                 if (temp[j] > 0)
                 {
-                    //System.out.println("I AM DOING STRAT");
                     temp[j]--;
                     if (getXORSum(temp) == 0)
                     {
@@ -37,7 +35,6 @@ public class NimBot
                 //if you cant take some, reset and check next lines
                 else
                 {
-                    //System.out.println("I HAVE SKIPPED THAT PART");
                     temp = copy(b.getLines());
                     j++;
                     continue;
